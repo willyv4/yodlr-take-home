@@ -1,11 +1,10 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "http://localhost:3000/users";
 
 class YodlrApi {
 	static async request(endpoint, data = {}, method = "get") {
-		const url = `${BASE_URL}/users`;
-		if (endpoint) url.concat("/", endpoint);
+		const url = !endpoint ? BASE_URL : `${BASE_URL}/${endpoint}`;
 		const params = method === "get" ? data : {};
 
 		try {
@@ -26,8 +25,15 @@ class YodlrApi {
 	}
 
 	static async getUserById(Id) {
-		console.log("id:", Id);
 		return await this.request(Id);
+	}
+
+	static async updateUserById(Id, formData) {
+		await this.request(Id, formData, "put");
+	}
+
+	static async deleteUser(Id) {
+		await this.request(Id, {}, "delete");
 	}
 }
 
